@@ -1,13 +1,45 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export function HomeScreen( {navigation} ) {
+  const [notes, setNotes] = useState([]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getData();
+    }, [])
+);
+
+  const getData = async () => {
+    try {
+      const savedNotes = await AsyncStorage.getItem('notes');
+      if (savedNotes) {
+        setNotes(JSON.parse(savedNotes));
+      }
+    } catch(error) {
+      console.log(error);
+    }
+  };
+
     return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.herotitle}>FastNotes</Text>
       <Text style={styles.subherotitle}>Your easy to use notes app</Text>
       <Text style={styles.descriptiveText}>Notes:</Text>
+
+      <FlatList data={notes} keyExtractor={(item) => item.id.toString()} renderItem={({ item }) => (
+        <View style={{ paddingLeft: 10, margin: 10, backgroundColor: '#f0f0f0' }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.title}</Text>
+          <Text style={{ fontSize: 14, marginTop: 5 }}>{item.noteMessage}</Text>
+        </View>
+      )}
+    />
+
+
     <SafeAreaView style={styles.pageSpace} edges={['bottom']}>
         <Pressable
               onPress={() => navigation.navigate("New Note")} 
