@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
-import { KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Dimensions, KeyboardAvoidingView, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -41,7 +41,7 @@ export function NewNoteScreen( {navigation} ) {
     return(
         <SafeAreaView style={styles.boxContainer}>
     <KeyboardAvoidingView
-      style={{ flex: 1, width: '90%' }}
+      style={{ flex: 1, width: 'width * 0.9' }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={100}>
 
       <TextInput
@@ -74,6 +74,9 @@ export function NewNoteScreen( {navigation} ) {
   </SafeAreaView>
 )
 }
+
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   boxContainer: {
     flex: 1,
@@ -87,25 +90,25 @@ const styles = StyleSheet.create({
   formButtons: {
     opacity: 100,
     borderRadius: 15,
-    height: 40,
-    width: '100%',
+    height: height * 0.06,
+    width: width * 0.9,
     justifyContent: 'center',
     marginBottom: 15,
   },
   smallButtonText: {
     color: 'white',
     fontWeight: 'bold',
-    fontSize: 24,
+    fontSize: width * 0.06,
     textAlign: 'center',
   },
   textInputTitle: {
-    fontSize: 18,
+    fontSize: width * 0.06,
     borderBottomColor: 'black',
     borderBottomWidth: 1, 
   },
   textInputNote: {
-    fontSize: 18,
-    marginTop: 15,
+    fontSize: width * 0.05,
+    marginTop: height * 0.001,
     flex: 1,
   },
     pressedButton: {

@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useState } from 'react';
-import { FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export function HomeScreen( {navigation} ) {
@@ -38,9 +38,9 @@ export function HomeScreen( {navigation} ) {
   const renderedNote = ({ item }) => {
     return (
     <TouchableOpacity onPress={() => handleOnPress(item)} activeOpacity={0.7}>
-        <View style={{ paddingLeft: 10, margin: 10, backgroundColor: '#f0f0f0' }}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{item.title}</Text>
-          <Text style={{ fontSize: 14, marginTop: 5 }}>{item.noteMessage}</Text>
+        <View style={{ paddingLeft: 10, margin: 10 }}>
+          <Text style={{ fontSize: width * 0.05, fontWeight: 'bold' }}>{item.title}</Text>
+          <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.noteMessage}</Text>
         </View>
     </TouchableOpacity>
     );
@@ -52,7 +52,7 @@ export function HomeScreen( {navigation} ) {
       <Text style={styles.subherotitle}>Your easy to use notes app</Text>
       <Text style={styles.descriptiveText}>Notes:</Text>
 
-      <FlatList style={{ height: '90%' }} data={notes} renderItem={renderedNote} keyExtractor={(item) => item.id.toString()}/>
+      <FlatList style={{ height: 'height * 0.9' }} data={notes} renderItem={renderedNote} keyExtractor={(item) => item.id.toString()}/>
 
     <View style={styles.pageSpace}>
       <Pressable
@@ -62,21 +62,21 @@ export function HomeScreen( {navigation} ) {
           {backgroundColor: "#735530"},
           pressed && styles.pressedButton]}>
           <Text style={styles.buttonText}>{"New note"}</Text>
-          <MaterialIcons name="article" size={22} color="white"/>
+          <MaterialIcons name="article" size={width * 0.07} color="white"/>
       </Pressable>
     </View>
       <Modal animationType='slide' visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
         <SafeAreaView style={styles.modalView}>
-          <Text>Title: {selectedNote?.title}</Text>
-          <Text>Message: {selectedNote?.noteMessage}</Text>
+          <Text style={styles.textDisplayTitle} >Title: {selectedNote?.title}</Text>
+          <Text style={styles.textDisplayNote}>Message: {selectedNote?.noteMessage}</Text>
           <Pressable
               onPress={() => setModalVisible(false)} 
               style={({ pressed }) => [
                 styles.newNoteButton,
                 {backgroundColor: "#735530"}, 
                 pressed && styles.pressedButton]}>
-                    <Text style={styles.buttonText}>{"back"}</Text>
-                    <MaterialIcons name="home" size={22} color="white"/>
+                    <Text style={styles.buttonText}>{"Back"}</Text>
+                    <MaterialIcons name="home" size={width * 0.07} color="white"/>
         </Pressable>
         </SafeAreaView>
       </Modal>
@@ -84,37 +84,39 @@ export function HomeScreen( {navigation} ) {
     )
 }
 
+const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
   },
   herotitle: {
-    fontSize: 38,
+    fontSize: width * 0.1,
     fontWeight: 'bold',
     textAlign: 'center'
   },
   subherotitle: {
-    fontSize: 14,
+    fontSize: width * 0.04,
     textAlign: 'center'
   },
   descriptiveText: {
     marginLeft: '5%',
     marginRight: '5%',
-    fontSize: 18,
+    fontSize: width * 0.05,
     borderBottomWidth: 1,
   },
   buttonText: {
     color: 'white',
-    fontSize: 24,
+    fontSize: width * 0.06,
     fontWeight: 'bold',
   },
   pressedButton: {
     opacity: 60
   },
   newNoteButton: {
-    height: 40,
-    width: '90%',
+    height: height * 0.06,
+    width: width * 0.9,
     borderRadius: 15,
     borderColor: '#735530',
     flexDirection: 'row',
@@ -131,6 +133,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  textDisplayTitle: {
+    marginTop: height * 0.005,
+    fontSize: width * 0.06,
+    fontWeight: "bold", 
+  },
+  textDisplayNote: {
+    fontSize: width * 0.05,
+    marginTop: height * 0.001,
+    flex: 1,
   }
   
 });
