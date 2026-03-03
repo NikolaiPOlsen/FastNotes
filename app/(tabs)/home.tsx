@@ -1,14 +1,16 @@
 import { HomeButton } from '@/components/appButton';
 import { NoteMenu } from '@/components/menu';
+import { Colors } from '@/constants/colors';
 import { getData } from '@/utils/noteUtils';
 import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import { router } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, FlatList, Modal, Pressable, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export function HomeScreen( {navigation} ) {
+export default function HomeScreen() {
   const [notes, setNotes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
@@ -51,11 +53,6 @@ export function HomeScreen( {navigation} ) {
 
     return (
     <SafeAreaView style={styles.container}>
-
-      <Pressable onPress={() => navigation.navigate("User")}>
-        <MaterialIcons style={styles.userProfile} name="person" color="#7F5522" size={35}/>
-      </Pressable>
-
       <Text style={styles.herotitle}>FastNotes</Text>
       <Text style={styles.subherotitle}>Your easy to use notes app</Text>
       <Text style={styles.descriptiveText}>Notes:</Text>
@@ -64,13 +61,12 @@ export function HomeScreen( {navigation} ) {
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}/>
 
     <View style={styles.pageSpace}>
-      <HomeButton onPress={() => navigation.navigate("New Note")} label={"New Note"} ></HomeButton>
     </View>
       <Modal animationType='slide' visible={modalVisible} onRequestClose={() => setModalVisible(false)}>
         <MenuProvider>
         <View style={[styles.modalView, { paddingTop: height * 0.05,  paddingBottom: height * 0.05}]}>
-          <NoteMenu note={selectedNote} onEdit={() => { setModalVisible(false); navigation.navigate('Edit Note', { note: selectedNote }); }} onDelete={() => { setModalVisible(false); getData(); }}>
-              <MaterialIcons name='menu' size={35}/>
+          <NoteMenu note={selectedNote} onEdit={() => { setModalVisible(false); router.push({ pathname: "/screens/editNoteScreen", params: { note: JSON.stringify(selectedNote) } }); }} onDelete={() => { setModalVisible(false); fetchNotes(); }}>
+            <MaterialIcons name='menu' size={35}/>
           </NoteMenu>
           <Text style={styles.textDisplayTitle}>Title: {selectedNote?.note_title}</Text>
           <Text style={styles.textDisplayNote}>Message: {selectedNote?.note_message}</Text>
@@ -86,7 +82,7 @@ const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F7F4E1',
+    backgroundColor: Colors.background,
     flex: 1,
     flexDirection: 'column',
   },
@@ -106,7 +102,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
   },
   buttonText: {
-    color: 'white',
+    color: Colors.white,
     fontSize: width * 0.06,
     fontWeight: 'bold',
   },
@@ -117,7 +113,7 @@ const styles = StyleSheet.create({
     height: height * 0.06,
     width: width * 0.9,
     borderRadius: 15,
-    borderColor: '#735530',
+    borderColor: Colors.primary,
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
@@ -128,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalView: {
-    backgroundColor: '#F7F4E1',
+    backgroundColor: Colors.background,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',

@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/colors';
 import { Dimensions, Pressable, StyleSheet, Text } from 'react-native';
 
 type Props = {
@@ -12,7 +13,7 @@ export function AppButton({ onPress, label, icon }: Props) {
             onPress={onPress}
             style={({ pressed }) => [
                 styles.appButton,
-                {backgroundColor: "#7F5522"},
+                {backgroundColor: Colors.primary},
                 pressed && {opacity: '0.6'}
             ]}>
             <Text style={styles.buttonText}>{label}</Text>
@@ -27,7 +28,7 @@ export function HomeButton({ onPress, label, icon }: Props) {
             onPress={onPress}
             style={({ pressed }) => [
                 styles.homeButton,
-                {backgroundColor: "#7F5522"},
+                {backgroundColor: Colors.primary},
                 pressed && {opacity: '0.6'}
             ]}>
             <Text style={styles.buttonText}>{label}</Text>
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     buttonText: {
-        color: 'white',
+        color: Colors.white,
         fontSize: width * 0.06,
         fontWeight: 'bold',
     },

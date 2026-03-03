@@ -1,12 +1,14 @@
 import { HomeButton } from '@/components/appButton';
+import { Colors } from '@/constants/colors';
 import { useAuthContext } from '@/hooks/use-auth-context';
 import { supabase } from '@/utils/supabase';
+import { router } from 'expo-router';
 import React, { useState } from 'react';
 import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
-export function NewNoteScreen( {navigation} ) {
+export default function NewNoteScreen() {
   const [title, setTitle] = useState("");
   const [noteMessage, setNoteMessage] = useState("");
   const { claims } = useAuthContext();
@@ -32,7 +34,7 @@ export function NewNoteScreen( {navigation} ) {
       if (error) throw error;
 
       console.log('Note saved!');
-      {navigation.popTo('Home')};
+      router.push('./homeScreen');
     } 
     catch(error) {
       console.log(error)
@@ -46,7 +48,7 @@ export function NewNoteScreen( {navigation} ) {
 
       <TextInput
         placeholder="Title"
-        placeholderTextColor={'#AAAAAA'}
+        placeholderTextColor={Colors.textLight}
         style={styles.textInputTitle}
         onChangeText={setTitle}
       />
@@ -54,7 +56,7 @@ export function NewNoteScreen( {navigation} ) {
       <TextInput
         multiline={true}
         placeholder="Note"
-        placeholderTextColor={'#AAAAAA'}
+        placeholderTextColor={Colors.textLight}
         style={styles.textInputNote}
         onChangeText={setNoteMessage}
       />
@@ -72,7 +74,7 @@ const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
   boxContainer: {
-    backgroundColor: '#F7F4E1',
+    backgroundColor: Colors.background,
     flex: 1,
     flexDirection: 'column',
     alignItems: 'center',
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   smallButtonText: {
-    color: 'white',
+    color: Colors.white,
     fontWeight: 'bold',
     fontSize: width * 0.06,
     textAlign: 'center',
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
   textInputTitle: {
     fontSize: width * 0.05,
     fontWeight: 'bold',
-    borderBottomColor: 'black',
+    borderBottomColor: Colors.border,
     borderBottomWidth: 1, 
   },
   textInputNote: {

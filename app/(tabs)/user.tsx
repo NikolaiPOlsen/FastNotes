@@ -1,5 +1,6 @@
 import { AppButton } from '@/components/appButton';
 import { SignOut } from '@/components/logOut';
+import { Colors } from '@/constants/colors';
 import { StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -16,6 +17,6 @@ const styles = StyleSheet.create ({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#F7F4E1',
+        backgroundColor: Colors.background,
     }
 })

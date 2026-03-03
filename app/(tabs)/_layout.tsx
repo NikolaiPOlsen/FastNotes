@@ -1,37 +1,14 @@
+import { Colors } from '@/constants/colors';
+import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from 'expo-router';
 import React from 'react';
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
-
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={"#F5B727"} />,
-          tabBarStyle: { display: 'none' },
-        }}
-      />
-      <Tabs.Screen
-        name="newNote"
-        options={{
-          title: 'Note',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={"#F5B727"} />,
-          tabBarStyle: { display: 'none' },
-        }}
-      />
+    <Tabs screenOptions={{ tabBarActiveTintColor: Colors.primary }}>
+      <Tabs.Screen name={'home'} options={{ headerShown: false, tabBarLabel: 'Home', tabBarIcon: ({ color, size }) => <Ionicons name="home" color={Colors.primary} size={24}/> }} />
+      <Tabs.Screen name={'newNoteScreen'} options={{ headerShown: true, title: 'New note', tabBarLabel: 'New', tabBarIcon: ({ color, size }) => <Ionicons name="add-circle-outline" color={Colors.primary} size={30}/> }}/>
+      <Tabs.Screen name={'user'} options={{ headerShown: false, tabBarLabel: "Profile", tabBarIcon: ({ color, size }) => <Ionicons name="person" color={Colors.primary} size={24}/> }}/>
     </Tabs>
   );
 }

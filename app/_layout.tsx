@@ -1,24 +1,33 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
+import { useAuthContext } from '@/hooks/use-auth-context';
+import AuthProvider from '@/providers/auth-provider';
+import { Redirect, Stack } from 'expo-router';
+import { MenuProvider } from 'react-native-popup-menu';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+export function RootNavigation() {
+  const { isLoggedIn, isLoading } = useAuthContext();
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+  if (isLoading) return null;
 
+  if (!isLoggedIn) {
+    return <Redirect href={"/(auth)/start"}/>;
+  }
+  if (isLoggedIn) {
+    return <Redirect href={"/(tabs)/home"}/>;
+  }
+}
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
-
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <AuthProvider>
+      <MenuProvider skipInstanceCheck>
+        <Stack>
+          <Stack.Screen name='(auth)' options={{ headerShown: false }}/>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
+          <Stack.Screen name="screens/editNoteScreen" options={{ headerBackTitle: 'Back' }}/>
+          <Stack.Screen name="screens/newNoteScreen" options={{ headerBackTitle: 'Back' }}/>
+        </Stack>
+        <RootNavigation/>
+      </MenuProvider>
+    </AuthProvider>
   );
 }
