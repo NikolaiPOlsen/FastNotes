@@ -14,6 +14,7 @@ export default function NewNoteScreen() {
   const { claims } = useAuthContext();
 
   const logData = async () => {
+    const { data: { user } } = await supabase.auth.getUser()
     if (!title.trim()) {
       alert('Did you forget a title?');
       return;
@@ -28,7 +29,8 @@ export default function NewNoteScreen() {
       .insert({
         note_title: title,
         note_message: noteMessage,
-        user_id: claims?.id,
+        user_id: user?.id,
+        display_name: user?.user_metadata?.display_name,
       })
 
       if (error) throw error;

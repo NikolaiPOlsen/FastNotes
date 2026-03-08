@@ -45,7 +45,7 @@ export default function HomeScreen() {
           <Text style={{ fontSize: width * 0.05, fontWeight: 'bold' }}>{item.note_title}</Text>
           <Text style={{ fontSize: width * 0.04, marginTop: 5 }} numberOfLines={1}>{item.note_message}</Text>
           <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.created_at}</Text>
-          <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.user_id}</Text>
+
         </View>
     </TouchableOpacity>
     );

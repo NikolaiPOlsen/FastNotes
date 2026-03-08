@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View, } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-export function EditNoteScreen() {
+export default function EditNoteScreen() {
     const params = useLocalSearchParams();
     const note = JSON.parse(params.note as string);
     const [newTitle, setNewTitle] = useState(note.note_title);

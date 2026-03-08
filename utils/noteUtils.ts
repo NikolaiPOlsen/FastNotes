@@ -22,11 +22,15 @@ export async function editNote(id: number, newTitle: string, newMessage: string,
     onEdit();
 }
 
-export async function getData() {
-      const { data, error } = await supabase
-      .from('Notes')
-      .select('*')
+export async function getData(onlyMine: boolean = true) {
+      const { data: { user } } = await supabase.auth.getUser()
+      
+      let query = supabase.from('Notes').select('*').order('created_at', { ascending: false })
 
-      if (error) throw error;
-      return data;
+      if (onlyMine) {
+        query = query.eq('user_id', user?.id)
+    }
+    const { data, error } = await query
+    if (error) throw error;
+    return data;
   }
