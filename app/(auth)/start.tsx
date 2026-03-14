@@ -1,6 +1,6 @@
 import { AppButton } from '@/components/appButton';
 import { Colors } from '@/constants/colors';
-import { MaterialIcons } from '@react-native-vector-icons/material-icons';
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,14 +8,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function StartScreen() {
     return (
         <SafeAreaView style={styles.container}>
-            <Text style={styles.herotitle}>FastNotes</Text>
+            <Ionicons name='cafe' size={width * 0.15} color={Colors.primary}/> 
+            <Text style={styles.herotitle}>Coffee Notes</Text>
             <Text style={styles.subherotitle}>Your easy to use notes app</Text>
 
             <View style={ styles.space}>
-                <AppButton onPress={() => router.push("/(auth)/login")} label="Login" icon={<MaterialIcons name="person" size={width * 0.07} color={Colors.white}/>}/>
+                <AppButton onPress={() => router.push("/(auth)/login")} label="Login"/>
             </View>
             <View style={ styles.space}>
-                <AppButton onPress={() => router.push("/(auth)/register")} label="Create Account" icon={<MaterialIcons name="person" size={width * 0.07} color={Colors.white}/>}/>
+                <AppButton onPress={() => router.push("/(auth)/register")} label="Create Account"/>
             </View>
         </SafeAreaView>
     )
@@ -24,6 +25,9 @@ export default function StartScreen() {
 const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
+    logo: {
+        flexDirection: 'row',
+    },
     container: {
         backgroundColor: Colors.background,
         flex: 1,
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     herotitle: {
-        fontSize: width * 0.12,
+        fontSize: width * 0.10,
         fontWeight: 'bold',
         textAlign: 'center'
     },
@@ -43,4 +47,5 @@ const styles = StyleSheet.create({
     space: {
         marginTop: height * 0.01,
     }
+
 })

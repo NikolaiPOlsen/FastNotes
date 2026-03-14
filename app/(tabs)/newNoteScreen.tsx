@@ -1,11 +1,11 @@
-import { HomeButton } from '@/components/appButton';
+import { HomeButton, IconButton } from '@/components/appButton';
 import { Colors } from '@/constants/colors';
 import { useAuthContext } from '@/hooks/use-auth-context';
 import { supabase } from '@/utils/supabase';
-import { MaterialIcons } from '@react-native-vector-icons/material-icons';
+import { Ionicons } from "@expo/vector-icons";
 import { router } from 'expo-router';
 import React, { useState } from 'react';
-import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 
@@ -46,7 +46,7 @@ export default function NewNoteScreen() {
     return(
         <SafeAreaView style={styles.boxContainer}>
     <KeyboardAvoidingView
-      style={{ flex: 1, width: width * 0.9 }}
+      style={{ flex: 1, width: width * 0.9, marginTop: height * 0.07, }}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'} keyboardVerticalOffset={100}>
 
       <TextInput
@@ -64,9 +64,9 @@ export default function NewNoteScreen() {
         onChangeText={setNoteMessage}
       />
 
-      <TouchableOpacity>
-        <MaterialIcons name="camera"/>
-      </TouchableOpacity>
+      <View>
+        <IconButton onPress={() => false} icon={<Ionicons name="attach-outline" size={width * 0.07} color={Colors.primary} />}></IconButton>
+      </View>
 
 
       <View style={styles.formButtonRow}>

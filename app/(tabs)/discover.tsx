@@ -37,7 +37,7 @@ export default function DiscoverScreen() {
         const renderedNote = ({ item }) => {
           return (
           <TouchableOpacity onPress={() => handleOnPress(item)} activeOpacity={0.6}>
-              <View style={{ paddingLeft: 10, margin: 10 }}>
+              <View style={{ paddingLeft: 10, margin: 10, }}>
                 <Text style={{ fontSize: width * 0.05, fontWeight: 'bold' }}>{item.note_title}</Text>
                 <Text style={{ fontSize: width * 0.04, marginTop: 5 }} numberOfLines={1}>{item.note_message}</Text>
                 <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.created_at}</Text>
@@ -79,6 +79,7 @@ return (
         flexDirection: 'column',
       },
       descriptiveText: {
+        marginTop: height * 0.07,
         marginLeft: '5%',
         marginRight: '5%',
         fontSize: width * 0.05,
