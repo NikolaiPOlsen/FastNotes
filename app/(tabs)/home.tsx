@@ -13,7 +13,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function HomeScreen() {
   const [notes, setNotes] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedNote, setSelectedNote] = useState(null);
+  const [selectedNote, setSelectedNote] = useState<any>(null);
   const [refreshing, setRefreshing] = useState(false);
 
   const fetchNotes = async () => {
@@ -71,10 +71,11 @@ export default function HomeScreen() {
           <Text style={styles.textDisplayTitle}>Title: {selectedNote?.note_title}</Text>
           <Text style={styles.textDisplayNote}>Message: {selectedNote?.note_message}</Text>
           {selectedNote?.image_url && (
-                      <Image
-                        source={{ uri: selectedNote.image_url }}
-                        style={{ width: 200, height: 200 }}
-                      />)}
+            <Image
+              source={{ uri: selectedNote.image_url }}
+              style={{ width: width * 0.9, height: undefined, aspectRatio: 4/3 }}
+              resizeMode="contain"
+            />)}
           <HomeButton onPress={() => setModalVisible(false)} label={"Back"} ></HomeButton>
         </View>
         </MenuProvider>

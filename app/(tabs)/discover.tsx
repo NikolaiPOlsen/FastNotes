@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function DiscoverScreen() {
       const [notes, setNotes] = useState([]);
       const [modalVisible, setModalVisible] = useState(false);
-      const [selectedNote, setSelectedNote] = useState(null);
+      const [selectedNote, setSelectedNote] = useState<any>(null);
       const [refreshing, setRefreshing] = useState(false);
 
         const fetchNotes = async () => {
@@ -47,7 +47,12 @@ export default function DiscoverScreen() {
                 {item.image_url && (
                   <Image
                     source={{ uri: item.image_url }}
-                    style={{ width: width * 0.2, height: height * 0.1, borderRadius: 8, marginLeft: 10 }}
+                    style={{ 
+                      width: width * 0.25, 
+                      height: undefined,
+                      aspectRatio: 4/3,
+                    }} 
+                    resizeMode="contain"
                   />
                 )}
               </View>
@@ -74,7 +79,8 @@ return (
           {selectedNote?.image_url && (
             <Image
               source={{ uri: selectedNote.image_url }}
-              style={{ width: 200, height: 200 }}
+              style={{ width: width * 0.9, height: undefined, aspectRatio: 4/3 }}
+              resizeMode="contain"
             />)}
           <HomeButton onPress={() => setModalVisible(false)} label={"Back"} ></HomeButton>
           </View>

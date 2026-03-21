@@ -86,7 +86,14 @@ export default function NewNoteScreen() {
         horizontal
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <Image source={{ uri: item }} style={{ width: width * 0.25, height: height * 0.1, margin: 5 }} />
+          <Image source={{ uri: item }} 
+                 style={{ 
+                  width: width * 0.25, 
+                  height: undefined,
+                  aspectRatio: 4/3,
+                  }} 
+                resizeMode="contain"
+                  />
         )}/>)}
       </View>
 
