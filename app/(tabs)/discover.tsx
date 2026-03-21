@@ -3,7 +3,7 @@ import { Colors } from '@/constants/colors';
 import { getData } from '@/utils/noteUtils';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, FlatList, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function DiscoverScreen() {
@@ -63,6 +63,11 @@ return (
         <View style={[styles.modalView, { paddingTop: height * 0.05,  paddingBottom: height * 0.05}]}>
           <Text style={styles.textDisplayTitle}>Title: {selectedNote?.note_title}</Text>
           <Text style={styles.textDisplayNote}>Message: {selectedNote?.note_message}</Text>
+          {selectedNote?.image_url && (
+            <Image
+              source={{ uri: selectedNote.image_url }}
+              style={{ width: 200, height: 200 }}
+            />)}
           <HomeButton onPress={() => setModalVisible(false)} label={"Back"} ></HomeButton>
           </View>
       </Modal>

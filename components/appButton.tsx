@@ -5,6 +5,7 @@ type Props = {
     onPress: () => void;
     label: string;
     icon?: React.ReactNode;
+    disabled?: boolean;
 }
 
 type PropsIconButton = {
@@ -19,7 +20,7 @@ export function AppButton({ onPress, label, icon }: Props) {
             style={({ pressed }) => [
                 styles.appButton,
                 {backgroundColor: Colors.primary},
-                pressed && {opacity: '0.6'}
+                pressed && {opacity: 0.6}
             ]}>
             <Text style={styles.buttonText}>{label}</Text>
             {icon}
@@ -27,14 +28,15 @@ export function AppButton({ onPress, label, icon }: Props) {
     )
 }
 
-export function HomeButton({ onPress, label, icon }: Props) {
+export function HomeButton({ onPress, label, icon, disabled }: Props) {
     return (
         <Pressable
             onPress={onPress}
+            disabled={disabled}
             style={({ pressed }) => [
                 styles.homeButton,
                 {backgroundColor: Colors.primary},
-                pressed && {opacity: '0.6'}
+                (pressed || disabled) && {opacity: 0.5}
             ]}>
             <Text style={styles.buttonText}>{label}</Text>
             {icon}
@@ -48,7 +50,7 @@ export function IconButton({ onPress, icon }: PropsIconButton) {
             onPress={onPress}
             style={({ pressed }) => [
                 styles.iconButton,
-                pressed && {opacity: '0.6'}
+                pressed && {opacity: 0.6}
             ]}>
             <Text style={styles.buttonText}></Text>
             {icon}

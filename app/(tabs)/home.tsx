@@ -6,7 +6,7 @@ import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { router } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, FlatList, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -70,6 +70,11 @@ export default function HomeScreen() {
           </NoteMenu>
           <Text style={styles.textDisplayTitle}>Title: {selectedNote?.note_title}</Text>
           <Text style={styles.textDisplayNote}>Message: {selectedNote?.note_message}</Text>
+          {selectedNote?.image_url && (
+                      <Image
+                        source={{ uri: selectedNote.image_url }}
+                        style={{ width: 200, height: 200 }}
+                      />)}
           <HomeButton onPress={() => setModalVisible(false)} label={"Back"} ></HomeButton>
         </View>
         </MenuProvider>
