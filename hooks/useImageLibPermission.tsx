@@ -3,8 +3,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { useEffect, useState } from 'react';
 import { Alert } from 'react-native';
 
-const ALLOWED_FORMATS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-const ALLOWED_FORMATS_DISPLAY = 'JPG, JPEG, PNG, GIF, WEBP';
+const ALLOWED_FORMATS = ['jpg', 'jpeg', 'png', 'webp'];
+const ALLOWED_FORMATS_DISPLAY = 'JPG, JPEG, PNG, WEBP';
 const MAX_SIZE_MB = 15;
 const MAX_SIZE = MAX_SIZE_MB * 1024 * 1024;
 
