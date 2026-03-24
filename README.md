@@ -1,5 +1,5 @@
-# FastNotes - IOS
-Fast note is a simple to use notes app.
+# CoffeeNotes - IOS
+CoffeeNotes is a simple to use notes app.
 
 assignment_4
 ## Introduction
