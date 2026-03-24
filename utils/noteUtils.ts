@@ -22,10 +22,11 @@ export async function editNote(id: number, newTitle: string, newMessage: string,
     onEdit();
 }
 
-export async function getData(onlyMine: boolean = true) {
+export async function getData(onlyMine: boolean = true, offset?: number) {
       const { data: { user } } = await supabase.auth.getUser()
-      
+
       let query = supabase.from('Notes').select('*').order('created_at', { ascending: false })
+      if (offset !== undefined) query = query.range(offset, offset + 4)
 
       if (onlyMine) {
         query = query.eq('user_id', user?.id)

@@ -6,7 +6,7 @@ import { MaterialIcons } from '@react-native-vector-icons/material-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { router } from 'expo-router';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, FlatList, Image, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Dimensions, FlatList, Image, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,17 +15,29 @@ export default function HomeScreen() {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedNote, setSelectedNote] = useState<any>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [offset, setOffset] = useState(0);
 
-  const fetchNotes = async () => {
-    const data = await getData();
-    setNotes(data);
-}
+  const fetchNotes = async (currentOffset = 0) => {
+    const data = await getData(true, currentOffset);
+    if (currentOffset === 0) {
+        setNotes(data);
+    } else {
+        setNotes(prev => [...prev, ...data]);
+    }
+};
 
-  const onRefresh = useCallback(async () => {
+const loadMore = async () => {
+    const newOffset = offset + 5;
+    setOffset(newOffset);
+    await fetchNotes(newOffset);
+};
+
+const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await fetchNotes();
+    setOffset(0);
+    await fetchNotes(0);
     setRefreshing(false);
-})
+});
 
   useFocusEffect(
     React.useCallback(() => {
@@ -59,6 +71,7 @@ export default function HomeScreen() {
 
       <FlatList style={{ flex: 1 }} data={notes} renderItem={renderedNote} keyExtractor={(item) => item.id.toString()} refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}/>
+      <Button title="Load More" onPress={loadMore}/>
 
     <View style={styles.pageSpace}>
     </View>
