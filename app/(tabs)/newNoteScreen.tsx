@@ -1,13 +1,15 @@
 import { HomeButton } from '@/components/appButton';
+import CameraModal from '@/components/cameraModal';
 import { PictureMenu } from '@/components/menu';
 import { Colors } from '@/constants/colors';
-import { useAuthContext } from '@/hooks/use-auth-context';
+import useUploadMedia from '@/hooks/upload-media';
 import useImagePermission from '@/hooks/useImageLibPermission';
 import { supabase } from '@/utils/supabase';
 import { Ionicons } from "@expo/vector-icons";
+import { CameraView } from 'expo-camera';
 import { router } from 'expo-router';
-import React, { useState } from 'react';
-import { Dimensions, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { ActivityIndicator, Alert, Dimensions, FlatList, Image, KeyboardAvoidingView, Platform, StyleSheet, TextInput, View } from 'react-native';
 import { MenuProvider } from 'react-native-popup-menu';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -15,8 +17,11 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function NewNoteScreen() {
   const [title, setTitle] = useState("");
   const [noteMessage, setNoteMessage] = useState("");
-  const { claims } = useAuthContext();
-  const { openLibrary } = useImagePermission();
+  const { openLibrary, images, addImage, clearImages } = useImagePermission();
+  const [cameraVisible, setCameraVisible] = useState(false);
+  const cameraRef = useRef<CameraView>(null);
+  const { uploadImage, uploading } = useUploadMedia();
+
 
   const logData = async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -29,6 +34,7 @@ export default function NewNoteScreen() {
       return;
     }
     try {
+      const imageUrl = images.length > 0 ? await uploadImage(images[0]) : null;
       const { error } = await supabase
       .from('Notes')
       .insert({
@@ -36,15 +42,18 @@ export default function NewNoteScreen() {
         note_message: noteMessage,
         user_id: user?.id,
         display_name: user?.user_metadata?.display_name,
+        image_url: imageUrl
       })
 
       if (error) throw error;
 
-      console.log('Note saved!');
-      router.push('/home');
-    } 
+      setTitle('');
+      setNoteMessage('');
+      clearImages();
+      router.replace('/home');
+    }
     catch(error) {
-      console.log(error)
+      Alert.alert("Something went wrong");
     }
   }
     return(
@@ -58,6 +67,7 @@ export default function NewNoteScreen() {
         placeholder="Title"
         placeholderTextColor={Colors.textLight}
         style={styles.textInputTitle}
+        value={title}
         onChangeText={setTitle}
       />
 
@@ -66,15 +76,37 @@ export default function NewNoteScreen() {
         placeholder="Note"
         placeholderTextColor={Colors.textLight}
         style={styles.textInputNote}
+        value={noteMessage}
         onChangeText={setNoteMessage}
       />
 
-      <PictureMenu CameraPhoto={() => alert('Camera not implemented yet')} PhotoAlbum={openLibrary}>
+      <View>
+      {images.length > 0 && (<FlatList
+        data={images}
+        horizontal
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => (
+          <Image source={{ uri: item }} 
+                 style={{ 
+                  width: width * 0.25, 
+                  height: undefined,
+                  aspectRatio: 4/3,
+                  }} 
+                resizeMode="contain"
+                  />
+        )}/>)}
+      </View>
+
+      <CameraModal visible={cameraVisible} onClose={() => setCameraVisible(false)} onRetake={() => setCameraVisible(true)} cameraRef={cameraRef} onPhoto={addImage}/>
+
+      <PictureMenu CameraPhoto={() => setCameraVisible(true)} PhotoAlbum={openLibrary}>
         <Ionicons name="attach-outline" size={width * 0.07} color={Colors.primary} />
       </PictureMenu>
 
       <View style={styles.formButtonRow}>
-        <HomeButton onPress={logData} label={"Create"} ></HomeButton>
+        {uploading
+          ? <ActivityIndicator size="large" color={Colors.primary} />
+          : <HomeButton onPress={logData} label={"Create"} disabled={uploading} />}
       </View>
 
     </KeyboardAvoidingView>
@@ -95,6 +127,8 @@ const styles = StyleSheet.create({
   formButtonRow: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   formButtons: {
     opacity: 100,

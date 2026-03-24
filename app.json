@@ -12,6 +12,11 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.anonymous.FastNote"
     },
+    "extra": {
+      "eas": {
+      "projectId": "9bd48df6-2aee-4ca0-a00a-9135d571ed8c"
+  }
+},
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
@@ -55,4 +60,5 @@
       "reactCompiler": true
     }
   }
+  
 }

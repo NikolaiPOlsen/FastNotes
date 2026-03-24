@@ -3,13 +3,13 @@ import { Colors } from '@/constants/colors';
 import { getData } from '@/utils/noteUtils';
 import { useFocusEffect } from '@react-navigation/native';
 import React, { useCallback, useState } from 'react';
-import { Dimensions, FlatList, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, FlatList, Image, Modal, RefreshControl, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function DiscoverScreen() {
       const [notes, setNotes] = useState([]);
       const [modalVisible, setModalVisible] = useState(false);
-      const [selectedNote, setSelectedNote] = useState(null);
+      const [selectedNote, setSelectedNote] = useState<any>(null);
       const [refreshing, setRefreshing] = useState(false);
 
         const fetchNotes = async () => {
@@ -37,11 +37,24 @@ export default function DiscoverScreen() {
         const renderedNote = ({ item }) => {
           return (
           <TouchableOpacity onPress={() => handleOnPress(item)} activeOpacity={0.6}>
-              <View style={{ paddingLeft: 10, margin: 10, }}>
-                <Text style={{ fontSize: width * 0.05, fontWeight: 'bold' }}>{item.note_title}</Text>
-                <Text style={{ fontSize: width * 0.04, marginTop: 5 }} numberOfLines={1}>{item.note_message}</Text>
-                <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.created_at}</Text>
-                <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.display_name}</Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center', paddingLeft: 10, margin: 10 }}>
+                <View style={{ flex: 1 }}>
+                  <Text style={{ fontSize: width * 0.05, fontWeight: 'bold' }}>{item.note_title}</Text>
+                  <Text style={{ fontSize: width * 0.04, marginTop: 5 }} numberOfLines={1}>{item.note_message}</Text>
+                  <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.created_at}</Text>
+                  <Text style={{ fontSize: width * 0.04, marginTop: 5 }}>{item.display_name}</Text>
+                </View>
+                {item.image_url && (
+                  <Image
+                    source={{ uri: item.image_url }}
+                    style={{ 
+                      width: width * 0.25, 
+                      height: undefined,
+                      aspectRatio: 4/3,
+                    }} 
+                    resizeMode="contain"
+                  />
+                )}
               </View>
           </TouchableOpacity>
           );
@@ -63,6 +76,12 @@ return (
         <View style={[styles.modalView, { paddingTop: height * 0.05,  paddingBottom: height * 0.05}]}>
           <Text style={styles.textDisplayTitle}>Title: {selectedNote?.note_title}</Text>
           <Text style={styles.textDisplayNote}>Message: {selectedNote?.note_message}</Text>
+          {selectedNote?.image_url && (
+            <Image
+              source={{ uri: selectedNote.image_url }}
+              style={{ width: width * 0.9, height: undefined, aspectRatio: 4/3 }}
+              resizeMode="contain"
+            />)}
           <HomeButton onPress={() => setModalVisible(false)} label={"Back"} ></HomeButton>
           </View>
       </Modal>

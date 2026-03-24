@@ -1,8 +1,18 @@
 import { Colors } from '@/constants/colors';
 import { useAuthContext } from '@/hooks/use-auth-context';
 import AuthProvider from '@/providers/auth-provider';
+import * as Notifications from 'expo-notifications';
 import { Redirect, Stack } from 'expo-router';
 import { MenuProvider } from 'react-native-popup-menu';
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+    shouldShowBanner: true,
+    shouldShowList: true,
+  }),
+});
 
 export function RootNavigation() {
   const { isLoggedIn, isLoading } = useAuthContext();
@@ -24,7 +34,6 @@ export default function RootLayout() {
           <Stack.Screen name='(auth)' options={{ headerShown: false }}/>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
           <Stack.Screen name="screens/editNoteScreen" options={{ headerBackTitle: 'Back', title: 'Edit note', headerStyle: { backgroundColor: Colors.background }, headerTintColor: 'black', }}/>
-          <Stack.Screen name="screens/newNoteScreen" options={{ headerBackTitle: 'Back' }}/>
         </Stack>
         <RootNavigation/>
       </MenuProvider>

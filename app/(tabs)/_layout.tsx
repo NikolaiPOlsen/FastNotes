@@ -2,7 +2,6 @@ import { Colors } from '@/constants/colors';
 import { Ionicons } from "@expo/vector-icons";
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Dimensions } from 'react-native';
 
 export default function TabLayout() {
   return (
@@ -14,5 +13,3 @@ export default function TabLayout() {
     </Tabs>
   );
 }
-
-const { width, height } = Dimensions.get('window');
