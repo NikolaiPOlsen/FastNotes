@@ -1,4 +1,9 @@
 # CoffeeNotes - IOS
+
+> [!WARNING]
+> Velora is currently under active development. Features may be incomplete,
+> changed, or missing. Use with caution.
+
 CoffeeNotes is a simple to use notes app.
 
 ## Introduction
